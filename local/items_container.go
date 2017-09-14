@@ -1,4 +1,4 @@
-package impl
+package local
 
 import (
 	"github.com/nebtex/hybrids/golang/hybrids"

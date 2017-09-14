@@ -29,27 +29,6 @@ func (_m *LookupEnumeration) ByStringToUint16(input string) (uint16, bool) {
 	return r0, r1
 }
 
-// ByStringToUint32 provides a mock function with given fields: input
-func (_m *LookupEnumeration) ByStringToUint32(input string) (uint32, bool) {
-	ret := _m.Called(input)
-
-	var r0 uint32
-	if rf, ok := ret.Get(0).(func(string) uint32); ok {
-		r0 = rf(input)
-	} else {
-		r0 = ret.Get(0).(uint32)
-	}
-
-	var r1 bool
-	if rf, ok := ret.Get(1).(func(string) bool); ok {
-		r1 = rf(input)
-	} else {
-		r1 = ret.Get(1).(bool)
-	}
-
-	return r0, r1
-}
-
 // ByStringToUint8 provides a mock function with given fields: input
 func (_m *LookupEnumeration) ByStringToUint8(input string) (uint8, bool) {
 	ret := _m.Called(input)
@@ -84,27 +63,6 @@ func (_m *LookupEnumeration) ByUint16ToString(input uint16) (string, bool) {
 
 	var r1 bool
 	if rf, ok := ret.Get(1).(func(uint16) bool); ok {
-		r1 = rf(input)
-	} else {
-		r1 = ret.Get(1).(bool)
-	}
-
-	return r0, r1
-}
-
-// ByUint32ToString provides a mock function with given fields: input
-func (_m *LookupEnumeration) ByUint32ToString(input uint32) (string, bool) {
-	ret := _m.Called(input)
-
-	var r0 string
-	if rf, ok := ret.Get(0).(func(uint32) string); ok {
-		r0 = rf(input)
-	} else {
-		r0 = ret.Get(0).(string)
-	}
-
-	var r1 bool
-	if rf, ok := ret.Get(1).(func(uint32) bool); ok {
 		r1 = rf(input)
 	} else {
 		r1 = ret.Get(1).(bool)

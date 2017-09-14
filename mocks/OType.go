@@ -41,6 +41,38 @@ func (_m *OType) Enumeration() reflect.EnumerationContainer {
 	return r0
 }
 
+// ExternalApplication provides a mock function with given fields:
+func (_m *OType) ExternalApplication() reflect.ExternalApplicationContainer {
+	ret := _m.Called()
+
+	var r0 reflect.ExternalApplicationContainer
+	if rf, ok := ret.Get(0).(func() reflect.ExternalApplicationContainer); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(reflect.ExternalApplicationContainer)
+		}
+	}
+
+	return r0
+}
+
+// ExternalResource provides a mock function with given fields:
+func (_m *OType) ExternalResource() reflect.ExternalResourceContainer {
+	ret := _m.Called()
+
+	var r0 reflect.ExternalResourceContainer
+	if rf, ok := ret.Get(0).(func() reflect.ExternalResourceContainer); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(reflect.ExternalResourceContainer)
+		}
+	}
+
+	return r0
+}
+
 // Field provides a mock function with given fields:
 func (_m *OType) Field() reflect.FieldContainer {
 	ret := _m.Called()

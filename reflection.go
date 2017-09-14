@@ -44,13 +44,6 @@ type LookupEnumeration interface {
 	ByStringToUint16(input string) (value uint16, ok bool)
 }
 
-//go:generate mockery -name=LookupTableOnUnion
-//LookupTableOnUnion ...
-type LookupTableOnUnion interface {
-	ByName(input string) (position hybrids.UnionKind, tableType TableContainer, ok bool)
-	ByPosition(position hybrids.UnionKind) (tableType TableContainer, ok bool)
-}
-
 //go:generate mockery -name=TableContainer
 //Table ...
 type TableContainer interface {
@@ -130,7 +123,10 @@ type UnionContainer interface {
 	Application() ApplicationContainer
 	ID() string
 	Name() string
-	LookupTable() LookupTableOnUnion
+	Kind() UnionTypes
+	//total numbers of items in the union
+	FieldCount() int
+	LookupFields() LookupFields
 }
 
 //go:generate mockery -name=LookupResources
@@ -166,4 +162,22 @@ type OType interface {
 	Resource() ResourceContainer
 	Field() FieldContainer
 	Application() ApplicationContainer
+	ExternalResource() ExternalResourceContainer
+	ExternalApplication() ExternalApplicationContainer
+}
+
+//go:generate mockery -name=ExternalResourceContainer
+//ExternalResourceContainer
+type ExternalResourceContainer interface {
+	ID() string
+	Application() ExternalApplicationContainer
+	Name() string
+}
+
+//go:generate mockery -name=ExternalApplicationContainer
+//ExternalApplicationContainer
+type ExternalApplicationContainer interface {
+	Path() string
+	Version() string
+	Alias() string
 }

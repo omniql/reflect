@@ -12,6 +12,9 @@ type oType struct {
 	str         *structContainer
 	field       *fieldContainer
 	res         *resourceContainer
+	union       *unionContainer
+	er          *externalResourceContainer
+	ea          *externalApplicationContainer
 }
 
 func (o *oType) Kind() reflect.OmniTypes {
@@ -43,5 +46,13 @@ func (o *oType) Field() reflect.FieldContainer {
 }
 
 func (o *oType) Union() reflect.UnionContainer {
-	return o.field
+	return o.union
+}
+
+func (o *oType) ExternalResource() reflect.ExternalResourceContainer {
+	return o.er
+}
+
+func (o *oType) ExternalApplication() reflect.ExternalApplicationContainer {
+	return o.ea
 }

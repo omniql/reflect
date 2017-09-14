@@ -40,14 +40,14 @@ func (_m *ApplicationContainer) Path() string {
 }
 
 // ResourceCount provides a mock function with given fields:
-func (_m *ApplicationContainer) ResourceCount() uint16 {
+func (_m *ApplicationContainer) ResourceCount() int {
 	ret := _m.Called()
 
-	var r0 uint16
-	if rf, ok := ret.Get(0).(func() uint16); ok {
+	var r0 int
+	if rf, ok := ret.Get(0).(func() int); ok {
 		r0 = rf()
 	} else {
-		r0 = ret.Get(0).(uint16)
+		r0 = ret.Get(0).(int)
 	}
 
 	return r0

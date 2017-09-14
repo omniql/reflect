@@ -25,6 +25,20 @@ func (_m *UnionContainer) Application() reflect.ApplicationContainer {
 	return r0
 }
 
+// FieldCount provides a mock function with given fields:
+func (_m *UnionContainer) FieldCount() int {
+	ret := _m.Called()
+
+	var r0 int
+	if rf, ok := ret.Get(0).(func() int); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(int)
+	}
+
+	return r0
+}
+
 // ID provides a mock function with given fields:
 func (_m *UnionContainer) ID() string {
 	ret := _m.Called()
@@ -39,16 +53,30 @@ func (_m *UnionContainer) ID() string {
 	return r0
 }
 
-// LookupTable provides a mock function with given fields:
-func (_m *UnionContainer) LookupTable() reflect.LookupTableOnUnion {
+// Kind provides a mock function with given fields:
+func (_m *UnionContainer) Kind() reflect.UnionTypes {
 	ret := _m.Called()
 
-	var r0 reflect.LookupTableOnUnion
-	if rf, ok := ret.Get(0).(func() reflect.LookupTableOnUnion); ok {
+	var r0 reflect.UnionTypes
+	if rf, ok := ret.Get(0).(func() reflect.UnionTypes); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(reflect.UnionTypes)
+	}
+
+	return r0
+}
+
+// LookupFields provides a mock function with given fields:
+func (_m *UnionContainer) LookupFields() reflect.LookupFields {
+	ret := _m.Called()
+
+	var r0 reflect.LookupFields
+	if rf, ok := ret.Get(0).(func() reflect.LookupFields); ok {
 		r0 = rf()
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(reflect.LookupTableOnUnion)
+			r0 = ret.Get(0).(reflect.LookupFields)
 		}
 	}
 

@@ -1,0 +1,21 @@
+api: v1.schema.omniql.almagest.io
+rid: owner/omniql/package/dummy
+spec:
+  metadata:
+    name: Dummy
+    kind: Package
+  version:
+    tag: 1.50
+  imports:
+   - alias: profile
+     package:
+      urlPath:
+        path: schema.omniql.almagest.io/omniql/profile
+     version:
+       tag: 3.3
+   - alias: social
+     package:
+      api: v1.schema.omniql.almagest.io
+      rid: owner/omniql/package/social-accounts
+     version:
+       branch: master

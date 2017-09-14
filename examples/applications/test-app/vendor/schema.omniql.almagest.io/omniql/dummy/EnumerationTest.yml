@@ -1,0 +1,10 @@
+api: v1.schema.omniql.almagest.io
+rid: owner/omniql/package/dummy/tree/v1.5.0/enumeration/EnumerationTest
+spec:
+  metadata:
+    name: EnumerationTest
+    kind: Enumeration
+  kind: Uint16
+  items:
+  - name: Enum1
+  - name: Enum2

@@ -1,0 +1,5 @@
+package: github.com/omniql/reflect
+import:
+- package: github.com/nebtex/hybrids
+  subpackages:
+  - golang/hybrids

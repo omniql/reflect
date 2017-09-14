@@ -21,7 +21,7 @@ type Struct struct {
 
 //Enumeration ...
 type Enumeration struct {
-	Metadata *Metadata          `json:"meta"`
+	Metadata *Metadata          `json:"metadata"`
 	Kind     string             `json:"kind"`
 	Items    []*EnumerationItem `json:"items"`
 }
@@ -37,18 +37,23 @@ type Table struct {
 	Fields   []*Field  `json:"fields"`
 }
 
-//Table definition
+//Resource definition
 type Resource struct {
 	Metadata *Metadata `json:"metadata"`
 	Fields   []*Field  `json:"fields"`
 }
 
-//Table definition
+//Union definition
 type Union struct {
-	Metadata *Metadata `json:"metadata"`
-	Fields   []*Field  `json:"fields"`
-	Kind     string    `json:"fields"`
-	Items    []string  `json:"items"`
+	Metadata  *Metadata    `json:"metadata"`
+	ItemsKind string       `json:"items_kind"`
+	Items     []UnionItems `json:"items"`
+}
+
+//UnionItems definition
+type UnionItems struct {
+	FieldName string `json:"field_name"`
+	Type      string `json:"type"`
 }
 
 //Application ...

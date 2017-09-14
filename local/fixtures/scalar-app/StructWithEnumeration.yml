@@ -1,0 +1,11 @@
+api: v1.schema.omniql.almagest.io
+rid: owner/omniql/package/dummy/tree/v1/struct/StructWithEnumeration
+spec:
+  metadata:
+    name: StructWithEnumeration
+    kind: Struct
+  fields:
+  - name: country
+    type: Countries
+  - name: population
+    type: Uint32

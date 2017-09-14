@@ -1,0 +1,11 @@
+api: v1.schema.omniql.almagest.io
+rid: owner/omniql/package/dummy/tree/v1/enumeration/Enumeration
+spec:
+  metadata:
+    name: Countries
+    kind: Enumeration
+  kind: Uint16
+  items:
+  - name: USA
+  - name: China
+  - name: Japan

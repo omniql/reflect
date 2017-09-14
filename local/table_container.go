@@ -9,7 +9,7 @@ type tableContainer struct {
 	id         string
 	app        *applicationContainer
 	name       string
-	fieldIndex [...]*fieldContainer
+	fieldIndex []*fieldContainer
 	fieldMap   map[string]*fieldContainer
 }
 

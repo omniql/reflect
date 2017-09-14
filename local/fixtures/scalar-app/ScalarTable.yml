@@ -1,0 +1,51 @@
+api: omniql.almagest.io/v1
+rid: owner/omniql/application/dummy/tree/v1/table/ScalarTable
+spec:
+  metadata:
+    name: ScalarTable
+    kind: Table
+  fields:
+  - name: boolean
+    type: boolean
+  - name: int8
+    type: int8
+  - name: uint8
+    type: uint8
+  - name: int16
+    type: int16
+  - name: uint16
+    type: uint16
+  - name: int32
+    type: int32
+  - name: uint32
+    type: uint32
+  - name: int64
+    type: int64
+  - name: uint64
+    type: uint64
+  - name: float32
+    type: float32
+  - name: float64
+    type: float64
+  - name: vectorBoolean
+    type: vectorBoolean
+  - name: vectorInt8
+    type: vectorInt8
+  - name: vectorUint8
+    type: vectorUint8
+  - name: vectorInt16
+    type: vectorInt16
+  - name: vectorUint16
+    type: vectorUint16
+  - name: vectorInt32
+    type: vectorInt32
+  - name: vectorUint32
+    type: vectorUint32
+  - name: vectorInt64
+    type: vectorInt64
+  - name: vectorUint64
+    type: vectorUint64
+  - name: vectorFloat32
+    type: vectorFloat32
+  - name: vectorFloat64
+    type: vectorFloat64

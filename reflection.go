@@ -2,20 +2,23 @@ package reflect
 
 import (
 	"github.com/nebtex/hybrids/golang/hybrids"
+	"github.com/omniql/reflect/local"
 )
 
 type OmniTypes uint16
 
+//go:generate stringer -type=OmniTypes
 const (
-	Table       OmniTypes = iota
+	Table            OmniTypes = iota
 	Enumeration
 	Struct
 	Union
 	Resource
-	Field
+	ExternalResource
 	Application
 )
 
+//go:generate stringer -type=UnionTypes
 type UnionTypes uint16
 
 const (
@@ -112,6 +115,9 @@ type FieldContainer interface {
 //go:generate mockery -name=EnumerationContainer
 //Enumeration ...
 type EnumerationContainer interface {
+	Application() ApplicationContainer
+	ID() string
+	Name() string
 	Lookup() LookupEnumeration
 	//the underlying data type
 	HybridType() hybrids.Types
@@ -160,7 +166,6 @@ type OType interface {
 	Struct() StructContainer
 	Union() UnionContainer
 	Resource() ResourceContainer
-	Field() FieldContainer
 	Application() ApplicationContainer
 	ExternalResource() ExternalResourceContainer
 	ExternalApplication() ExternalApplicationContainer
@@ -180,4 +185,9 @@ type ExternalApplicationContainer interface {
 	Path() string
 	Version() string
 	Alias() string
+}
+
+func LoadApplication(path string) {
+	buider := &local.Builder{}
+
 }

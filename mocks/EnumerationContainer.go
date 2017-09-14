@@ -10,6 +10,22 @@ type EnumerationContainer struct {
 	mock.Mock
 }
 
+// Application provides a mock function with given fields:
+func (_m *EnumerationContainer) Application() reflect.ApplicationContainer {
+	ret := _m.Called()
+
+	var r0 reflect.ApplicationContainer
+	if rf, ok := ret.Get(0).(func() reflect.ApplicationContainer); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(reflect.ApplicationContainer)
+		}
+	}
+
+	return r0
+}
+
 // HybridType provides a mock function with given fields:
 func (_m *EnumerationContainer) HybridType() hybrids.Types {
 	ret := _m.Called()
@@ -19,6 +35,20 @@ func (_m *EnumerationContainer) HybridType() hybrids.Types {
 		r0 = rf()
 	} else {
 		r0 = ret.Get(0).(hybrids.Types)
+	}
+
+	return r0
+}
+
+// ID provides a mock function with given fields:
+func (_m *EnumerationContainer) ID() string {
+	ret := _m.Called()
+
+	var r0 string
+	if rf, ok := ret.Get(0).(func() string); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(string)
 	}
 
 	return r0
@@ -35,6 +65,20 @@ func (_m *EnumerationContainer) Lookup() reflect.LookupEnumeration {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(reflect.LookupEnumeration)
 		}
+	}
+
+	return r0
+}
+
+// Name provides a mock function with given fields:
+func (_m *EnumerationContainer) Name() string {
+	ret := _m.Called()
+
+	var r0 string
+	if rf, ok := ret.Get(0).(func() string); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(string)
 	}
 
 	return r0

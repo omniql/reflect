@@ -9,8 +9,8 @@ type unionContainer struct {
 	app        *applicationContainer
 	id         string
 	name       string
-	kind       reflect.UnionTypes
-	fieldIndex [...]*fieldContainer
+	itemsKind  reflect.UnionTypes
+	fieldIndex []*fieldContainer
 	fieldMap   map[string]*fieldContainer
 }
 
@@ -30,8 +30,8 @@ func (u *unionContainer) Name() string {
 }
 
 // Kind ...
-func (u *unionContainer) Kind() reflect.UnionTypes {
-	return u.kind
+func (u *unionContainer) ItemsKind() reflect.UnionTypes {
+	return u.itemsKind
 }
 
 //FieldCount ...

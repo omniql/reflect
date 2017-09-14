@@ -73,22 +73,6 @@ func (_m *OType) ExternalResource() reflect.ExternalResourceContainer {
 	return r0
 }
 
-// Field provides a mock function with given fields:
-func (_m *OType) Field() reflect.FieldContainer {
-	ret := _m.Called()
-
-	var r0 reflect.FieldContainer
-	if rf, ok := ret.Get(0).(func() reflect.FieldContainer); ok {
-		r0 = rf()
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(reflect.FieldContainer)
-		}
-	}
-
-	return r0
-}
-
 // Kind provides a mock function with given fields:
 func (_m *OType) Kind() reflect.OmniTypes {
 	ret := _m.Called()

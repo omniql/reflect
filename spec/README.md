@@ -1,4 +1,4 @@
-##spec
+## spec
 
 basic spec of the yaml files that will be used in omniql for create an application schemas
 
@@ -12,8 +12,8 @@ basic spec of the yaml files that will be used in omniql for create an applicati
 * Resource
 * External Resource
 * Union of
-    - table
-    - resource
-    - external resource
+    - Table
+    - Resource
+    - External resource
 * Application
 * External Application

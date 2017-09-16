@@ -28,24 +28,50 @@ spec:
   - name: float64
     type: float64
   - name: vectorBoolean
-    type: vectorBoolean
+    type: vector
+    items: boolean
   - name: vectorInt8
-    type: vectorInt8
+    type: vector
+    items: int8
   - name: vectorUint8
-    type: vectorUint8
+    type: vector
+    items: uint8
   - name: vectorInt16
-    type: vectorInt16
+    type: vector
+    items: int16
   - name: vectorUint16
-    type: vectorUint16
+    type: vector
+    items: uint16
   - name: vectorInt32
-    type: vectorInt32
+    type: vector
+    items: int32
   - name: vectorUint32
-    type: vectorUint32
+    type: vector
+    items: uint32
   - name: vectorInt64
-    type: vectorInt64
+    type: vector
+    items: int64
   - name: vectorUint64
-    type: vectorUint64
+    type: vector
+    items: uint64
   - name: vectorFloat32
-    type: vectorFloat32
+    type: vector
+    items: float32
   - name: vectorFloat64
-    type: vectorFloat64
+    type: vector
+    items: float64
+  - name: structChild
+    type: ScalarStruct
+  - name: structChildrend
+    type: vector
+    items: ScalarStruct
+  - name: child
+    type: ScalarTable
+  - name: children
+    type: vector
+    items: ScalarTable
+  - name: country
+    type: Country
+  - name: countries
+    type: vector
+    items: Country

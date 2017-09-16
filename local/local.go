@@ -7,31 +7,30 @@ import (
 	"github.com/nebtex/hybrids/golang/hybrids"
 	"fmt"
 	"strings"
-	"github.com/mitchellh/mapstructure"
 )
 
 //LocalBuilder build a reflection object from a local file path
 type Builder struct {
-	app   *applicationContainer
-	store map[string]*oType
-	files map[string]interface{}
+	app          *applicationContainer
+	store        map[string]*oType
+	files        map[string]interface{}
+	files_types  map[string]string
 	externalApps map[string]*externalApplicationContainer
-	resources map[string]*resourceContainer
-
+	resources    map[string]*resourceContainer
 }
 
 func (lb *Builder) parseField(inputField *spec.Field, parent *oType, parentID string, position hybrids.FieldNumber) (fc *fieldContainer, err error) {
 	fc = &fieldContainer{}
 	fc.name = strcase.ToCamel(inputField.Name)
 	fc.position = position
-	fc.id = parentID + fmt.Sprintf("Field/%d", position)
+	fc.id = parentID + fmt.Sprintf("/Field/%d", position)
 	fc.app = lb.app
 	fc.parent = parent
 	switch reflect.ToLower(inputField.Type) {
 	case "vector":
 
 	default:
-		fc.value, fc.hybridsType, err = lb.parseFieldType(reflect.ToLower(inputField.Type))
+		fc.value, fc.hybridsType, err = lb.parseFieldType(strings.ToLower(inputField.Type))
 		if err != nil {
 			return
 		}
@@ -72,7 +71,6 @@ func (lb *Builder) parseFieldType(str string) (o *oType, h hybrids.Types, err er
 
 func (lb *Builder) parseType(str string) (o *oType, h hybrids.Types, err error) {
 	var ok bool
-
 	if !strings.Contains(str, ".") {
 		o, ok = lb.store[str]
 		if ok {
@@ -104,60 +102,38 @@ func (lb *Builder) parseType(str string) (o *oType, h hybrids.Types, err error) 
 			return
 		}
 
-		file, ok := lb.files[str]
-
+		bType, ok := lb.files_types[str]
 		if !ok {
-			err = fmt.Errorf("type %s not found in application", str)
+			err = fmt.Errorf("type definition for %s, not found", str)
 			return
 		}
+		itf := lb.files[str]
 
-		meta, ok := file["metadata"].(map[string]string)
-		if !ok {
-			err = fmt.Errorf("invalid file definition for  %s", str)
-			return
-		}
-
-		switch  reflect.ToLower(meta["kind"]) {
+		switch  bType {
 		case "struct":
-			is := &spec.Struct{}
-			err = mapstructure.Decode(is, file)
-			if err != nil {
-				return
-			}
+			is := itf.(*spec.Struct)
 			_, o, err = lb.parseStruct(is)
 			h = hybrids.Struct
 			return
 		case "table":
-			it := &spec.Table{}
-			err = mapstructure.Decode(it, file)
-			if err != nil {
-				return
-			}
-			_, o, err = lb.parseTable(it)
+			it := itf.(*spec.Table)
+			_, o, err = lb.parseTable(it, false)
 			h = hybrids.Table
 			return
 		case "union":
-			ut := &spec.Union{}
-			err = mapstructure.Decode(ut, file)
-			if err != nil {
-				return
-			}
+			ut := itf.(*spec.Union)
 			_, o, err = lb.parseUnion(ut)
 			h = hybrids.Union
 			return
 		case "enumeration":
-			et := &spec.Enumeration{}
-			err = mapstructure.Decode(et, file)
-			if err != nil {
-				return
-			}
+			et := itf.(*spec.Enumeration)
 			_, o, err = lb.parseEnumeration(et)
 			if err != nil {
 				h = o.enum.hType
 			}
 			return
 		default:
-			err = fmt.Errorf("definition of type %s, not supported", reflect.ToLower(meta["itemsKind"]))
+			err = fmt.Errorf("definition of type %s, not supported", bType)
 			return
 		}
 
@@ -191,13 +167,13 @@ func (lb *Builder) parseStruct(inputStruct *spec.Struct) (s *structContainer, o 
 			err = fmt.Errorf("field with id %s and name %s is not a scalar", fc.id, fc.name)
 			return
 		}
-		s.fieldIndex[pos] = fc
+		s.fieldIndex = append(s.fieldIndex, fc)
 		s.fieldMap[reflect.ToLower(fc.name)] = fc
 	}
 	return
 }
 
-func (lb *Builder) parseTable(inputTable *spec.Table) (t *tableContainer, o *oType, err error) {
+func (lb *Builder) parseTable(inputTable *spec.Table, asResource bool) (t *tableContainer, o *oType, err error) {
 	var fc *fieldContainer
 	t = &tableContainer{}
 	t.name = strcase.ToCamel(inputTable.Metadata.Name)
@@ -209,14 +185,16 @@ func (lb *Builder) parseTable(inputTable *spec.Table) (t *tableContainer, o *oTy
 	t.fieldIndex = make([]*fieldContainer, 0, len(inputTable.Fields))
 	t.fieldMap = make(map[string]*fieldContainer)
 
-	lb.store[reflect.ToLower(inputTable.Metadata.Name)] = o
+	if !asResource {
+		lb.store[reflect.ToLower(inputTable.Metadata.Name)] = o
+	}
 
 	for pos, field := range inputTable.Fields {
 		fc, err = lb.parseField(field, o, t.id, hybrids.FieldNumber(pos))
 		if err != nil {
 			return
 		}
-		t.fieldIndex[pos] = fc
+		t.fieldIndex = append(t.fieldIndex, fc)
 		t.fieldMap[reflect.ToLower(fc.name)] = fc
 	}
 	return
@@ -241,7 +219,7 @@ func (lb *Builder) parseEnumeration(inputEnum *spec.Enumeration) (e *enumeration
 			err = fmt.Errorf("enumeration of type %s only supports %d items", inputEnum.Kind, hybrids.MaxUint8)
 			return
 		}
-	case "uin16":
+	case "uint16":
 		e.hType = hybrids.Uint16
 		if len(inputEnum.Items) > hybrids.MaxUint16 {
 			err = fmt.Errorf("enumeration of type %s only supports %d items", inputEnum.Kind, hybrids.MaxUint16)

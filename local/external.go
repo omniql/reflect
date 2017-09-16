@@ -21,9 +21,10 @@ func (e *externalResourceContainer) Name() string {
 }
 
 type externalApplicationContainer struct {
-	path    string
-	version string
-	alias   string
+	path          string
+	version       string
+	alias         string
+	usedResources []*externalResourceContainer
 }
 
 func (e *externalApplicationContainer) Path() string {
@@ -36,4 +37,14 @@ func (e *externalApplicationContainer) Version() string {
 
 func (e *externalApplicationContainer) Alias() string {
 	return e.alias
+}
+
+
+func (e *externalApplicationContainer) UsedResourcesCount() int {
+	return len(e.usedResources)
+}
+
+
+func (e *externalApplicationContainer) UsedResource(pos int) reflect.ExternalResourceContainer {
+	return e.usedResources[pos]
 }

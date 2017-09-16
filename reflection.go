@@ -2,7 +2,6 @@ package reflect
 
 import (
 	"github.com/nebtex/hybrids/golang/hybrids"
-	"github.com/omniql/reflect/local"
 )
 
 type OmniTypes uint16
@@ -30,8 +29,9 @@ const (
 //go:generate mockery -name=LookupFields
 //LookupFields ...
 type LookupFields interface {
-	ByPosition(fn hybrids.FieldNumber) (f FieldContainer, ok bool)
-	ByName(fieldName string) (f FieldContainer, ok bool)
+	FieldCount() int
+	FieldByPosition(fn hybrids.FieldNumber) (f FieldContainer, ok bool)
+	FieldByName(fieldName string) (f FieldContainer, ok bool)
 }
 
 //go:generate mockery -name=LookupEnumeration
@@ -53,7 +53,6 @@ type TableContainer interface {
 	ID() string
 	Application() ApplicationContainer
 	Name() string
-	FieldCount() int
 	LookupFields() LookupFields
 }
 
@@ -73,7 +72,6 @@ type StructContainer interface {
 	ID() string
 	Name() string
 	Application() ApplicationContainer
-	FieldCount() int
 	LookupFields() LookupFields
 }
 
@@ -129,18 +127,18 @@ type UnionContainer interface {
 	Application() ApplicationContainer
 	ID() string
 	Name() string
-	Kind() UnionTypes
+	ItemsKind() UnionTypes
 	//total numbers of items in the union
-	FieldCount() int
 	LookupFields() LookupFields
 }
 
 //go:generate mockery -name=LookupResources
 //Application ...
 type LookupResources interface {
+	ResourceCount() int
 	//case insensitive
-	ByName(name string) (r ResourceContainer, ok bool)
-	ByPosition(position uint16) (r ResourceContainer, ok bool)
+	ResourceByName(name string) (r ResourceContainer, ok bool)
+	ResourceByPosition(position uint16) (r ResourceContainer, ok bool)
 }
 
 //go:generate mockery -name=ApplicationContainer
@@ -151,8 +149,16 @@ type ApplicationContainer interface {
 	//branch, commit ot tag
 	Version() string
 	//number of resources
-	ResourceCount() int
 	LookupResources() LookupResources
+	LookupImports() LookupImports
+}
+
+//go:generate mockery -name=LookupImports
+//LookupImports ...
+type LookupImports interface {
+	ImportsCount() int
+	ImportByPosition(position uint16) (e ExternalApplicationContainer, ok bool)
+	ImportByAlias(alias string) (e ExternalApplicationContainer, ok bool)
 }
 
 //go:generate mockery -name=OType
@@ -185,9 +191,6 @@ type ExternalApplicationContainer interface {
 	Path() string
 	Version() string
 	Alias() string
-}
-
-func LoadApplication(path string) {
-	buider := &local.Builder{}
-
+	UsedResourcesCount() int
+	UsedResource(pos int) ExternalResourceContainer
 }

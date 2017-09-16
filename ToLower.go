@@ -10,9 +10,11 @@ func ToLower(s string) string {
 			n += strings.ToLower(string(v))
 		}
 		if v >= 'a' && v <= 'z' {
-				n += string(v)
+			n += string(v)
+		}
+		if v >= '0' && v <= '9' {
+			n += string(v)
 		}
 	}
 	return n
 }
-

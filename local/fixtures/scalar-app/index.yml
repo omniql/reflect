@@ -1,10 +1,14 @@
-api: v1.schema.omniql.almagest.io
-rid: owner/omniql/package/dummy/tree/v1.5.0
+api: omniql.almagest.io/v1
+rid: owner/omniql/repository/scalar-app/tree/v1/application/scalar-app
 spec:
   metadata:
-    name: dummy
-    kind: Package
+    name: scalar-app
+    kind: Application
   version: v1
+  path: omniql.almagest.io/omniql/scalar-app
+  resourceIdKind: uint64
+  resources:
+  - table: ScalarTable
   imports:
    - alias: profile
      package: schema.omniql.almagest.io/omniql/profile

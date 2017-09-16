@@ -1,8 +1,8 @@
 api: v1.schema.omniql.almagest.io
-rid: owner/omniql/package/dummy/tree/v1/enumeration/Enumeration
+rid: owner/omniql/package/dummy/tree/v1/enumeration/Countries
 spec:
   metadata:
-    name: Countries
+    name: Country
     kind: Enumeration
   kind: Uint16
   items:

@@ -34,7 +34,7 @@ func (t *tableContainer) LookupFields() reflect.LookupFields {
 }
 
 //ByPosition ...
-func (t *tableContainer) ByPosition(fn hybrids.FieldNumber) (f reflect.FieldContainer, ok bool) {
+func (t *tableContainer) FieldByPosition(fn hybrids.FieldNumber) (f reflect.FieldContainer, ok bool) {
 	if int(fn) > len(t.fieldIndex) {
 		return
 	}
@@ -42,7 +42,7 @@ func (t *tableContainer) ByPosition(fn hybrids.FieldNumber) (f reflect.FieldCont
 }
 
 //ByName ...
-func (t *tableContainer) ByName(fieldName string) (f reflect.FieldContainer, ok bool) {
+func (t *tableContainer) FieldByName(fieldName string) (f reflect.FieldContainer, ok bool) {
 	f, ok = t.fieldMap[reflect.ToLower(fieldName)]
 	return
 }

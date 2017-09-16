@@ -34,7 +34,7 @@ func (t *structContainer) LookupFields() reflect.LookupFields {
 }
 
 //ByPosition ...
-func (t *structContainer) ByPosition(fn hybrids.FieldNumber) (f reflect.FieldContainer, ok bool) {
+func (t *structContainer) FieldByPosition(fn hybrids.FieldNumber) (f reflect.FieldContainer, ok bool) {
 	if int(fn) > len(t.fieldIndex) {
 		return
 	}
@@ -42,7 +42,7 @@ func (t *structContainer) ByPosition(fn hybrids.FieldNumber) (f reflect.FieldCon
 }
 
 //ByName ...
-func (t *structContainer) ByName(fieldName string) (f reflect.FieldContainer, ok bool) {
+func (t *structContainer) FieldByName(fieldName string) (f reflect.FieldContainer, ok bool) {
 	f, ok = t.fieldMap[reflect.ToLower(fieldName)]
 	return
 }

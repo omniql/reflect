@@ -37,12 +37,6 @@ type Table struct {
 	Fields   []*Field  `json:"fields"`
 }
 
-//Resource definition
-type Resource struct {
-	Metadata *Metadata `json:"metadata"`
-	Fields   []*Field  `json:"fields"`
-}
-
 //Union definition
 type Union struct {
 	Metadata  *Metadata    `json:"metadata"`
@@ -61,6 +55,14 @@ type Application struct {
 	Metadata       *Metadata              `json:"metadata"`
 	ResourceIdType string                 `json:"resource_id_type"`
 	Imports        []ApplicationReference `json:"imports"`
+	Resources      []ResourcesDefinition  `json:"resources"`
+	Version        string                 `json:"version"`
+	Path           string                 `json:"path"`
+}
+
+//ResourcesDefinition ...
+type ResourcesDefinition struct {
+	Table string `json:"table"`
 }
 
 //ApplicationReference
@@ -68,4 +70,11 @@ type ApplicationReference struct {
 	Alias   string `json:"alias"`
 	Path    string `json:"path"`
 	Version string `json:"version"`
+}
+
+//YamlFile ...
+type YamlFile struct {
+	Api  string      `json:"api"`
+	RID  string      `json:"rid"`
+	Spec interface{} `json:"spec"`
 }

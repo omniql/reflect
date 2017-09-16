@@ -1,0 +1,46 @@
+hash: ca6e499e550b5c85e558ce07a55ab25d7bd0e4d355c35c899e5bceea1e327b05
+updated: 2017-09-16T15:01:55.987467819-05:00
+imports:
+- name: github.com/davecgh/go-spew
+  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
+  subpackages:
+  - spew
+- name: github.com/ghodss/yaml
+  version: 73d445a93680fa1a78ae23a5839bad48f32ba1ee
+- name: github.com/mitchellh/mapstructure
+  version: d0303fe809921458f417bcf828397a65db30a7e4
+- name: github.com/nebtex/hybrids
+  version: 00012fc1c2d2827d4da62c3e4cb331d394ada6f8
+  subpackages:
+  - golang/hybrids
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
+- name: github.com/stretchr/objx
+  version: cbeaeb16a013161a98496fad62933b1d21786672
+- name: github.com/stretchr/testify
+  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
+  subpackages:
+  - assert
+  - mock
+- name: gopkg.in/yaml.v2
+  version: 53feefa2559fb8dfa8d81baad31be332c97d6c77
+testImports:
+- name: github.com/gopherjs/gopherjs
+  version: 95deb33d587c9f6e24b494ea9bdf9648c48f9a60
+  subpackages:
+  - js
+- name: github.com/jtolds/gls
+  version: 77f18212c9c7edc9bd6a33d383a7b545ce62f064
+- name: github.com/smartystreets/assertions
+  version: 9c0ea8acbc1d8ad689f9e6fe0c1fa5838e0cabc2
+  subpackages:
+  - internal/go-render/render
+  - internal/oglematchers
+- name: github.com/smartystreets/goconvey
+  version: 9e8dc3f972df6c8fcc0375ef492c24d0bb204857
+  subpackages:
+  - convey
+  - convey/gotest
+  - convey/reporting

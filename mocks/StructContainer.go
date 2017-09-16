@@ -25,20 +25,6 @@ func (_m *StructContainer) Application() reflect.ApplicationContainer {
 	return r0
 }
 
-// FieldCount provides a mock function with given fields:
-func (_m *StructContainer) FieldCount() int {
-	ret := _m.Called()
-
-	var r0 int
-	if rf, ok := ret.Get(0).(func() int); ok {
-		r0 = rf()
-	} else {
-		r0 = ret.Get(0).(int)
-	}
-
-	return r0
-}
-
 // ID provides a mock function with given fields:
 func (_m *StructContainer) ID() string {
 	ret := _m.Called()

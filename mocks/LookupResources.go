@@ -9,8 +9,8 @@ type LookupResources struct {
 	mock.Mock
 }
 
-// ByName provides a mock function with given fields: name
-func (_m *LookupResources) ByName(name string) (reflect.ResourceContainer, bool) {
+// ResourceByName provides a mock function with given fields: name
+func (_m *LookupResources) ResourceByName(name string) (reflect.ResourceContainer, bool) {
 	ret := _m.Called(name)
 
 	var r0 reflect.ResourceContainer
@@ -32,8 +32,8 @@ func (_m *LookupResources) ByName(name string) (reflect.ResourceContainer, bool)
 	return r0, r1
 }
 
-// ByPosition provides a mock function with given fields: position
-func (_m *LookupResources) ByPosition(position uint16) (reflect.ResourceContainer, bool) {
+// ResourceByPosition provides a mock function with given fields: position
+func (_m *LookupResources) ResourceByPosition(position uint16) (reflect.ResourceContainer, bool) {
 	ret := _m.Called(position)
 
 	var r0 reflect.ResourceContainer
@@ -53,4 +53,18 @@ func (_m *LookupResources) ByPosition(position uint16) (reflect.ResourceContaine
 	}
 
 	return r0, r1
+}
+
+// ResourceCount provides a mock function with given fields:
+func (_m *LookupResources) ResourceCount() int {
+	ret := _m.Called()
+
+	var r0 int
+	if rf, ok := ret.Get(0).(func() int); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(int)
+	}
+
+	return r0
 }

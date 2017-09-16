@@ -25,20 +25,6 @@ func (_m *UnionContainer) Application() reflect.ApplicationContainer {
 	return r0
 }
 
-// FieldCount provides a mock function with given fields:
-func (_m *UnionContainer) FieldCount() int {
-	ret := _m.Called()
-
-	var r0 int
-	if rf, ok := ret.Get(0).(func() int); ok {
-		r0 = rf()
-	} else {
-		r0 = ret.Get(0).(int)
-	}
-
-	return r0
-}
-
 // ID provides a mock function with given fields:
 func (_m *UnionContainer) ID() string {
 	ret := _m.Called()
@@ -53,8 +39,8 @@ func (_m *UnionContainer) ID() string {
 	return r0
 }
 
-// Kind provides a mock function with given fields:
-func (_m *UnionContainer) Kind() reflect.UnionTypes {
+// ItemsKind provides a mock function with given fields:
+func (_m *UnionContainer) ItemsKind() reflect.UnionTypes {
 	ret := _m.Called()
 
 	var r0 reflect.UnionTypes

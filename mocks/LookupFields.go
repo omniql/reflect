@@ -10,8 +10,8 @@ type LookupFields struct {
 	mock.Mock
 }
 
-// ByName provides a mock function with given fields: fieldName
-func (_m *LookupFields) ByName(fieldName string) (reflect.FieldContainer, bool) {
+// FieldByName provides a mock function with given fields: fieldName
+func (_m *LookupFields) FieldByName(fieldName string) (reflect.FieldContainer, bool) {
 	ret := _m.Called(fieldName)
 
 	var r0 reflect.FieldContainer
@@ -33,8 +33,8 @@ func (_m *LookupFields) ByName(fieldName string) (reflect.FieldContainer, bool) 
 	return r0, r1
 }
 
-// ByPosition provides a mock function with given fields: fn
-func (_m *LookupFields) ByPosition(fn hybrids.FieldNumber) (reflect.FieldContainer, bool) {
+// FieldByPosition provides a mock function with given fields: fn
+func (_m *LookupFields) FieldByPosition(fn hybrids.FieldNumber) (reflect.FieldContainer, bool) {
 	ret := _m.Called(fn)
 
 	var r0 reflect.FieldContainer
@@ -54,4 +54,18 @@ func (_m *LookupFields) ByPosition(fn hybrids.FieldNumber) (reflect.FieldContain
 	}
 
 	return r0, r1
+}
+
+// FieldCount provides a mock function with given fields:
+func (_m *LookupFields) FieldCount() int {
+	ret := _m.Called()
+
+	var r0 int
+	if rf, ok := ret.Get(0).(func() int); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(int)
+	}
+
+	return r0
 }

@@ -9,6 +9,22 @@ type ApplicationContainer struct {
 	mock.Mock
 }
 
+// LookupImports provides a mock function with given fields:
+func (_m *ApplicationContainer) LookupImports() reflect.LookupImports {
+	ret := _m.Called()
+
+	var r0 reflect.LookupImports
+	if rf, ok := ret.Get(0).(func() reflect.LookupImports); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(reflect.LookupImports)
+		}
+	}
+
+	return r0
+}
+
 // LookupResources provides a mock function with given fields:
 func (_m *ApplicationContainer) LookupResources() reflect.LookupResources {
 	ret := _m.Called()
@@ -34,20 +50,6 @@ func (_m *ApplicationContainer) Path() string {
 		r0 = rf()
 	} else {
 		r0 = ret.Get(0).(string)
-	}
-
-	return r0
-}
-
-// ResourceCount provides a mock function with given fields:
-func (_m *ApplicationContainer) ResourceCount() int {
-	ret := _m.Called()
-
-	var r0 int
-	if rf, ok := ret.Get(0).(func() int); ok {
-		r0 = rf()
-	} else {
-		r0 = ret.Get(0).(int)
 	}
 
 	return r0

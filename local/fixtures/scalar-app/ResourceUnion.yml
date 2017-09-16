@@ -1,0 +1,12 @@
+api: omniql.almagest.io/v1
+rid: owner/omniql/application/dummy/tree/v1/Union/ResourceUnion
+spec:
+  metadata:
+    name: ResourceUnion
+    kind: Union
+  itemsKind: Resource
+  items:
+  - fieldName: withField
+    type: Friend
+  - type: File
+  - type: ScalarTable

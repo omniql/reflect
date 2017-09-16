@@ -1,0 +1,15 @@
+api: omniql.almagest.io/v1
+rid: owner/omniql/application/dummy/tree/v1/table/File
+spec:
+  metadata:
+    name: File
+    kind: Table
+  fields:
+  - name: name
+    type: string
+  - name: size
+    type: uint16
+  - name: extension
+    type: string
+  - name: profile
+    type: profile.Profile

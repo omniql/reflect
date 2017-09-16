@@ -10,7 +10,6 @@ import (
 	"strings"
 	"github.com/omniql/reflect"
 	"fmt"
-	"github.com/iancoleman/strcase"
 )
 
 func LoadApplication(path string) (app reflect.ApplicationContainer, oErr error) {
@@ -95,8 +94,13 @@ func LoadApplication(path string) (app reflect.ApplicationContainer, oErr error)
 
 	appC := &applicationContainer{}
 	appC.version = rawApp.Version
+	appC.path = rawApp.Path
+
 	appC.resourceIndex = make([]*resourceContainer, 0, len(rawApp.Resources))
 	appC.resourceMap = map[string]*resourceContainer{}
+
+	appC.externalAppIndex = make([]*externalApplicationContainer, 0, len(rawApp.Imports))
+	appC.externalAppMap = map[string]*externalApplicationContainer{}
 
 	builder.app = appC
 	builder.store = map[string]*oType{}
@@ -108,13 +112,16 @@ func LoadApplication(path string) (app reflect.ApplicationContainer, oErr error)
 		ea.version = imp.Version
 		ea.path = imp.Path
 		builder.externalApps[reflect.ToLower(ea.alias)] = ea
+		appC.externalAppIndex = append(appC.externalAppIndex, ea)
+		appC.externalAppMap[reflect.ToLower(ea.alias)] = ea
+
 	}
 
 	//load resources [initial]
 	for pos, resource := range rawApp.Resources {
 		res := &resourceContainer{}
-		res.name = strcase.ToCamel(resource.Table)
-		res.id = appC.path + "/" + fmt.Sprintf("Resource/%d", pos)
+		res.name = resource.Table
+		res.id = appC.path + "/" + fmt.Sprintf("Resource/%s", res.name)
 		res.app = appC
 		res.position = uint16(pos)
 		or := &oType{}

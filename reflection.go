@@ -172,9 +172,7 @@ type OType interface {
 	Struct() StructContainer
 	Union() UnionContainer
 	Resource() ResourceContainer
-	Application() ApplicationContainer
 	ExternalResource() ExternalResourceContainer
-	ExternalApplication() ExternalApplicationContainer
 }
 
 //go:generate mockery -name=ExternalResourceContainer

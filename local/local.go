@@ -3,7 +3,6 @@ package local
 import (
 	"github.com/omniql/reflect/spec"
 	"github.com/omniql/reflect"
-	"github.com/iancoleman/strcase"
 	"github.com/nebtex/hybrids/golang/hybrids"
 	"fmt"
 	"strings"
@@ -21,13 +20,51 @@ type Builder struct {
 
 func (lb *Builder) parseField(inputField *spec.Field, parent *oType, parentID string, position hybrids.FieldNumber) (fc *fieldContainer, err error) {
 	fc = &fieldContainer{}
-	fc.name = strcase.ToCamel(inputField.Name)
+	fc.name = inputField.Name
 	fc.position = position
 	fc.id = parentID + fmt.Sprintf("/Field/%d", position)
 	fc.app = lb.app
 	fc.parent = parent
+
 	switch reflect.ToLower(inputField.Type) {
 	case "vector":
+		fc.items = &itemsContainer{}
+		fc.items.value, fc.items.hType, err = lb.parseFieldType(strings.ToLower(inputField.Items))
+		if err != nil {
+			return
+		}
+		switch fc.items.hType {
+		case hybrids.Boolean:
+			fc.hybridsType = hybrids.VectorBoolean
+		case hybrids.Int8:
+			fc.hybridsType = hybrids.VectorInt8
+		case hybrids.Uint8:
+			fc.hybridsType = hybrids.VectorUint8
+		case hybrids.Uint16:
+			fc.hybridsType = hybrids.VectorUint16
+		case hybrids.Int32:
+			fc.hybridsType = hybrids.VectorInt32
+		case hybrids.Uint32:
+			fc.hybridsType = hybrids.VectorUint32
+		case hybrids.Int64:
+			fc.hybridsType = hybrids.VectorInt64
+		case hybrids.Float32:
+			fc.hybridsType = hybrids.VectorFloat32
+		case hybrids.Float64:
+			fc.hybridsType = hybrids.VectorFloat64
+		case hybrids.Struct:
+			fc.hybridsType = hybrids.VectorStruct
+		case hybrids.String:
+			fc.hybridsType = hybrids.VectorString
+		case hybrids.Byte:
+			fc.hybridsType = hybrids.VectorByte
+		case hybrids.ResourceID:
+			fc.hybridsType = hybrids.VectorResourceID
+		case hybrids.Table:
+			fc.hybridsType = hybrids.VectorTable
+		case hybrids.Union:
+			fc.hybridsType = hybrids.VectorUnion
+		}
 
 	default:
 		fc.value, fc.hybridsType, err = lb.parseFieldType(strings.ToLower(inputField.Type))
@@ -63,6 +100,10 @@ func (lb *Builder) parseFieldType(str string) (o *oType, h hybrids.Types, err er
 		h = hybrids.Float32
 	case "float64":
 		h = hybrids.Float64
+	case "string":
+		h = hybrids.String
+	case "byte":
+		h = hybrids.Byte
 	default:
 		o, h, err = lb.parseType(str)
 	}
@@ -71,36 +112,38 @@ func (lb *Builder) parseFieldType(str string) (o *oType, h hybrids.Types, err er
 
 func (lb *Builder) parseType(str string) (o *oType, h hybrids.Types, err error) {
 	var ok bool
-	if !strings.Contains(str, ".") {
-		o, ok = lb.store[str]
-		if ok {
-			switch o.Kind() {
-			case reflect.Table:
-				h = hybrids.Table
-			case reflect.Struct:
-				h = hybrids.Struct
-			case reflect.Union:
-				switch o.union.itemsKind {
-				case reflect.UnionOfTables:
-					h = hybrids.Union
-				case reflect.UnionOfResources:
-					h = hybrids.ResourceID
-				case reflect.UnionOfExternalResources:
-					h = hybrids.Union
-				default:
-					err = fmt.Errorf("union of type %d not recognized", o.union.itemsKind)
-				}
-			case reflect.Enumeration:
-				h = o.enum.hType
-			case reflect.Resource:
+	o, ok = lb.store[str]
+
+	if ok {
+		switch o.Kind() {
+		case reflect.Table:
+			h = hybrids.Table
+		case reflect.Struct:
+			h = hybrids.Struct
+		case reflect.Union:
+			switch o.union.itemsKind {
+			case reflect.UnionOfTables:
+				h = hybrids.Union
+			case reflect.UnionOfResources:
 				h = hybrids.ResourceID
-			case reflect.ExternalResource:
-				h = hybrids.Table
+			case reflect.UnionOfExternalResources:
+				h = hybrids.Byte
 			default:
-				err = fmt.Errorf("otype of type %s not recognized", o.kind)
+				err = fmt.Errorf("union of type %d not recognized", o.union.itemsKind)
 			}
-			return
+		case reflect.Enumeration:
+			h = o.enum.hType
+		case reflect.Resource:
+			h = hybrids.ResourceID
+		case reflect.ExternalResource:
+			h = hybrids.Byte
+		default:
+			err = fmt.Errorf("otype of type %s not recognized", o.kind)
 		}
+		return
+	}
+
+	if !strings.Contains(str, ".") {
 
 		bType, ok := lb.files_types[str]
 		if !ok {
@@ -129,8 +172,9 @@ func (lb *Builder) parseType(str string) (o *oType, h hybrids.Types, err error) 
 			et := itf.(*spec.Enumeration)
 			_, o, err = lb.parseEnumeration(et)
 			if err != nil {
-				h = o.enum.hType
+				return
 			}
+			h = o.enum.hType
 			return
 		default:
 			err = fmt.Errorf("definition of type %s, not supported", bType)
@@ -138,7 +182,23 @@ func (lb *Builder) parseType(str string) (o *oType, h hybrids.Types, err error) 
 		}
 
 	} else {
+		h = hybrids.Byte
 		//is external resource
+		result := strings.Split(str, ".")
+		ea, ok := lb.app.externalAppMap[reflect.ToLower(result[0])]
+		if !ok {
+			err = fmt.Errorf("application with alias %s not found", result[0])
+			return
+		}
+		er := &externalResourceContainer{}
+		er.name = result[1]
+		er.app = ea
+		er.id = ea.path + "/Resource/" + er.name
+		ea.usedResources = append(ea.usedResources, er)
+		oer := &oType{}
+		oer.kind = reflect.ExternalResource
+		oer.er = er
+		lb.store[str] = oer
 
 	}
 	return
@@ -147,8 +207,8 @@ func (lb *Builder) parseType(str string) (o *oType, h hybrids.Types, err error) 
 func (lb *Builder) parseStruct(inputStruct *spec.Struct) (s *structContainer, o *oType, err error) {
 	var fc *fieldContainer
 	s = &structContainer{}
-	s.name = strcase.ToCamel(inputStruct.Metadata.Name)
-	s.id = "Struct/" + s.name
+	s.name = inputStruct.Metadata.Name
+	s.id = lb.app.path + "/Struct/" + s.name
 	s.app = lb.app
 	o = &oType{}
 	o.kind = reflect.Struct
@@ -176,8 +236,8 @@ func (lb *Builder) parseStruct(inputStruct *spec.Struct) (s *structContainer, o 
 func (lb *Builder) parseTable(inputTable *spec.Table, asResource bool) (t *tableContainer, o *oType, err error) {
 	var fc *fieldContainer
 	t = &tableContainer{}
-	t.name = strcase.ToCamel(inputTable.Metadata.Name)
-	t.id = "Table/" + t.name
+	t.name = inputTable.Metadata.Name
+	t.id = lb.app.path + "/Table/" + t.name
 	t.app = lb.app
 	o = &oType{}
 	o.kind = reflect.Table
@@ -203,10 +263,13 @@ func (lb *Builder) parseTable(inputTable *spec.Table, asResource bool) (t *table
 func (lb *Builder) parseEnumeration(inputEnum *spec.Enumeration) (e *enumerationContainer, o *oType, err error) {
 	e = &enumerationContainer{}
 	e.app = lb.app
-	e.name = strcase.ToCamel(inputEnum.Metadata.Name)
-	e.id = "Enumeration/" + e.name
+	e.name = inputEnum.Metadata.Name
+	e.id = lb.app.path + "/Enumeration/" + e.name
 	e.stringMap = map[string]uint16{}
-	e.stringIndex = make([]string, 0, len(inputEnum.Items))
+	e.stringIndex = make([]string, 0, len(inputEnum.Items)+1)
+	e.stringIndex = append(e.stringIndex, "None")
+	e.stringMap["none"] = 0
+
 	o = &oType{}
 	o.kind = reflect.Enumeration
 	o.enum = e
@@ -231,8 +294,8 @@ func (lb *Builder) parseEnumeration(inputEnum *spec.Enumeration) (e *enumeration
 	}
 
 	for position, item := range inputEnum.Items {
-		e.stringIndex = append(e.stringIndex, strcase.ToCamel(item.Name))
-		e.stringMap[reflect.ToLower(item.Name)] = uint16(position)
+		e.stringIndex = append(e.stringIndex, item.Name)
+		e.stringMap[reflect.ToLower(item.Name)] = uint16(position + 1)
 	}
 	return
 }
@@ -240,8 +303,8 @@ func (lb *Builder) parseEnumeration(inputEnum *spec.Enumeration) (e *enumeration
 func (lb *Builder) parseUnion(inputUnion *spec.Union) (u *unionContainer, o *oType, err error) {
 	u = &unionContainer{}
 	u.app = lb.app
-	u.name = strcase.ToCamel(inputUnion.Metadata.Name)
-	u.id = "Union/" + u.name
+	u.name = inputUnion.Metadata.Name
+	u.id = lb.app.path + "/Union/" + u.name
 	o = &oType{}
 	o.kind = reflect.Union
 	o.union = u
@@ -269,7 +332,7 @@ func (lb *Builder) parseUnion(inputUnion *spec.Union) (u *unionContainer, o *oTy
 		f.id = u.id + fmt.Sprintf("/Field/%d", position)
 		f.position = hybrids.FieldNumber(position)
 		f.app = lb.app
-		f.value, f.hybridsType, err = lb.parseType(item.Type)
+		f.value, f.hybridsType, err = lb.parseType(reflect.ToLower(item.Type))
 		if err != nil {
 			return
 		}
@@ -292,7 +355,7 @@ func (lb *Builder) parseUnion(inputUnion *spec.Union) (u *unionContainer, o *oTy
 		}
 
 		if item.FieldName != "" {
-			f.name = strcase.ToCamel(item.FieldName)
+			f.name = item.FieldName
 		} else {
 			switch u.itemsKind {
 			case reflect.UnionOfTables:

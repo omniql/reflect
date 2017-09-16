@@ -9,10 +9,12 @@ spec:
   resourceIdKind: uint64
   resources:
   - table: ScalarTable
+  - table: Friend
+  - table: File
   imports:
    - alias: profile
-     package: schema.omniql.almagest.io/omniql/profile
+     path: schema.omniql.almagest.io/omniql/profile
      version: v3
    - alias: social
-     package: schema.omniql.almagest.io/omniql/social-accounts
+     path: schema.omniql.almagest.io/omniql/social-accounts
      version: v2

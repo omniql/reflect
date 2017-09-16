@@ -37,22 +37,10 @@ func (o *oType) Resource() reflect.ResourceContainer {
 	return o.res
 }
 
-func (o *oType) Application() reflect.ApplicationContainer {
-	return o.application
-}
-
-func (o *oType) Field() reflect.FieldContainer {
-	return o.field
-}
-
 func (o *oType) Union() reflect.UnionContainer {
 	return o.union
 }
 
 func (o *oType) ExternalResource() reflect.ExternalResourceContainer {
 	return o.er
-}
-
-func (o *oType) ExternalApplication() reflect.ExternalApplicationContainer {
-	return o.ea
 }

@@ -1,0 +1,15 @@
+api: omniql.almagest.io/v1
+rid: owner/omniql/application/dummy/tree/v1/table/Friend
+spec:
+  metadata:
+    name: Friend
+    kind: Table
+  fields:
+  - name: name
+    type: string
+  - name: age
+    type: uint16
+  - name: id
+    type: file
+  - name: profile
+    type: profile.Profile

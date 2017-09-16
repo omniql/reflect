@@ -9,22 +9,6 @@ type OType struct {
 	mock.Mock
 }
 
-// Application provides a mock function with given fields:
-func (_m *OType) Application() reflect.ApplicationContainer {
-	ret := _m.Called()
-
-	var r0 reflect.ApplicationContainer
-	if rf, ok := ret.Get(0).(func() reflect.ApplicationContainer); ok {
-		r0 = rf()
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(reflect.ApplicationContainer)
-		}
-	}
-
-	return r0
-}
-
 // Enumeration provides a mock function with given fields:
 func (_m *OType) Enumeration() reflect.EnumerationContainer {
 	ret := _m.Called()
@@ -35,22 +19,6 @@ func (_m *OType) Enumeration() reflect.EnumerationContainer {
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(reflect.EnumerationContainer)
-		}
-	}
-
-	return r0
-}
-
-// ExternalApplication provides a mock function with given fields:
-func (_m *OType) ExternalApplication() reflect.ExternalApplicationContainer {
-	ret := _m.Called()
-
-	var r0 reflect.ExternalApplicationContainer
-	if rf, ok := ret.Get(0).(func() reflect.ExternalApplicationContainer); ok {
-		r0 = rf()
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(reflect.ExternalApplicationContainer)
 		}
 	}
 

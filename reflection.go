@@ -6,7 +6,6 @@ import (
 
 type OmniTypes uint16
 
-//go:generate stringer -type=OmniTypes
 const (
 	Table            OmniTypes = iota
 	Enumeration
@@ -17,7 +16,6 @@ const (
 	Application
 )
 
-//go:generate stringer -type=UnionTypes
 type UnionTypes uint16
 
 const (
@@ -26,7 +24,6 @@ const (
 	UnionOfExternalResources
 )
 
-//go:generate mockery -name=LookupFields
 //LookupFields ...
 type LookupFields interface {
 	FieldCount() int
@@ -34,7 +31,6 @@ type LookupFields interface {
 	FieldByName(fieldName string) (f FieldContainer, ok bool)
 }
 
-//go:generate mockery -name=LookupEnumeration
 //LookupEnumeration ...
 type LookupEnumeration interface {
 	//return camelcase
@@ -47,7 +43,6 @@ type LookupEnumeration interface {
 	ByStringToUint16(input string) (value uint16, ok bool)
 }
 
-//go:generate mockery -name=TableContainer
 //Table ...
 type TableContainer interface {
 	ID() string
@@ -56,7 +51,6 @@ type TableContainer interface {
 	LookupFields() LookupFields
 }
 
-//go:generate mockery -name=ResourceContainer
 //Resource ...
 type ResourceContainer interface {
 	ID() string
@@ -66,7 +60,6 @@ type ResourceContainer interface {
 	Table() TableContainer
 }
 
-//go:generate mockery -name=StructContainer
 //Struct ...
 type StructContainer interface {
 	ID() string
@@ -75,14 +68,12 @@ type StructContainer interface {
 	LookupFields() LookupFields
 }
 
-//go:generate mockery -name=ItemsContainer
 //Items ...
 type ItemsContainer interface {
 	ValueType() OType
 	HybridType() hybrids.Types
 }
 
-//go:generate mockery -name=FieldContainer
 //Field ...
 type FieldContainer interface {
 	//full id of this field, with the version, to allow query the backend
@@ -110,7 +101,6 @@ type FieldContainer interface {
 	Items() ItemsContainer
 }
 
-//go:generate mockery -name=EnumerationContainer
 //Enumeration ...
 type EnumerationContainer interface {
 	Application() ApplicationContainer
@@ -121,7 +111,6 @@ type EnumerationContainer interface {
 	HybridType() hybrids.Types
 }
 
-//go:generate mockery -name=UnionContainer
 //Union ...
 type UnionContainer interface {
 	Application() ApplicationContainer
@@ -132,7 +121,6 @@ type UnionContainer interface {
 	LookupFields() LookupFields
 }
 
-//go:generate mockery -name=LookupResources
 //Application ...
 type LookupResources interface {
 	ResourceCount() int
@@ -141,7 +129,6 @@ type LookupResources interface {
 	ResourceByPosition(position uint16) (r ResourceContainer, ok bool)
 }
 
-//go:generate mockery -name=ApplicationContainer
 //Application ...
 type ApplicationContainer interface {
 	//example omniql.almagest.io/nebtex/omniql
@@ -153,7 +140,6 @@ type ApplicationContainer interface {
 	LookupImports() LookupImports
 }
 
-//go:generate mockery -name=LookupImports
 //LookupImports ...
 type LookupImports interface {
 	ImportsCount() int
@@ -161,7 +147,6 @@ type LookupImports interface {
 	ImportByAlias(alias string) (e ExternalApplicationContainer, ok bool)
 }
 
-//go:generate mockery -name=OType
 //OType represent any omniql type
 type OType interface {
 	//Table, Field, Enumeration, etc..
@@ -175,7 +160,6 @@ type OType interface {
 	ExternalResource() ExternalResourceContainer
 }
 
-//go:generate mockery -name=ExternalResourceContainer
 //ExternalResourceContainer
 type ExternalResourceContainer interface {
 	ID() string
@@ -183,7 +167,6 @@ type ExternalResourceContainer interface {
 	Name() string
 }
 
-//go:generate mockery -name=ExternalApplicationContainer
 //ExternalApplicationContainer
 type ExternalApplicationContainer interface {
 	Path() string
@@ -192,3 +175,21 @@ type ExternalApplicationContainer interface {
 	UsedResourcesCount() int
 	UsedResource(pos int) ExternalResourceContainer
 }
+
+//go:generate stringer -type=OmniTypes
+//go:generate stringer -type=UnionTypes
+//go:generate mockery -name=LookupFields
+//go:generate mockery -name=LookupEnumeration
+//go:generate mockery -name=TableContainer
+//go:generate mockery -name=ResourceContainer
+//go:generate mockery -name=StructContainer
+//go:generate mockery -name=ItemsContainer
+//go:generate mockery -name=FieldContainer
+//go:generate mockery -name=EnumerationContainer
+//go:generate mockery -name=UnionContainer
+//go:generate mockery -name=LookupResources
+//go:generate mockery -name=ApplicationContainer
+//go:generate mockery -name=LookupImports
+//go:generate mockery -name=OType
+//go:generate mockery -name=ExternalResourceContainer
+//go:generate mockery -name=ExternalApplicationContainer

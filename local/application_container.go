@@ -2,11 +2,13 @@ package local
 
 import (
 	"github.com/omniql/reflect"
+	"github.com/nebtex/hybrids/golang/hybrids"
 )
 
 type applicationContainer struct {
 	path             string
 	version          string
+	rType            hybrids.ResourceIDType
 	resourceMap      map[string]*resourceContainer
 	resourceIndex    []*resourceContainer
 	externalAppMap   map[string]*externalApplicationContainer
@@ -15,6 +17,10 @@ type applicationContainer struct {
 
 func (a *applicationContainer) Path() string {
 	return a.path
+}
+
+func (a *applicationContainer) ResourceIDType() hybrids.ResourceIDType {
+	return a.rType
 }
 
 func (a *applicationContainer) Version() string {

@@ -138,6 +138,7 @@ type ApplicationContainer interface {
 	//number of resources
 	LookupResources() LookupResources
 	LookupImports() LookupImports
+	ResourceIDType() hybrids.ResourceIDType
 }
 
 //LookupImports ...

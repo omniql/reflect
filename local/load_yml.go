@@ -10,6 +10,7 @@ import (
 	"strings"
 	"github.com/omniql/reflect"
 	"fmt"
+	"github.com/nebtex/hybrids/golang/hybrids"
 )
 
 func LoadApplication(path string) (app reflect.ApplicationContainer, oErr error) {
@@ -96,6 +97,26 @@ func LoadApplication(path string) (app reflect.ApplicationContainer, oErr error)
 	appC.version = rawApp.Version
 	appC.path = rawApp.Path
 
+	switch reflect.ToLower(rawApp.ResourceIdType) {
+	case "string":
+		appC.rType = hybrids.ResourceIDTypeString
+	case "int16":
+		appC.rType = hybrids.ResourceIDTypeInt16
+	case "uint16":
+		appC.rType = hybrids.ResourceIDTypeUint16
+	case "int32":
+		appC.rType = hybrids.ResourceIDTypeInt32
+	case "uint32":
+		appC.rType = hybrids.ResourceIDTypeUint32
+	case "int64":
+		appC.rType = hybrids.ResourceIDTypeInt64
+	case "uint64":
+		appC.rType = hybrids.ResourceIDTypeUint64
+	default:
+		oErr = fmt.Errorf("resource id of type %s don't supported", rawApp.ResourceIdType)
+		return
+	}
+
 	appC.resourceIndex = make([]*resourceContainer, 0, len(rawApp.Resources))
 	appC.resourceMap = map[string]*resourceContainer{}
 
@@ -128,7 +149,7 @@ func LoadApplication(path string) (app reflect.ApplicationContainer, oErr error)
 		or.res = res
 		or.kind = reflect.Resource
 		builder.store[reflect.ToLower(resource.Table)] = or
-		appC.resourceIndex = append(appC.resourceIndex , res)
+		appC.resourceIndex = append(appC.resourceIndex, res)
 		appC.resourceMap[reflect.ToLower(res.name)] = res
 
 	}
